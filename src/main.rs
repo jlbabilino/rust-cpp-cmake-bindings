@@ -8,6 +8,6 @@ include_cpp! {
 }
 
 fn main() {
-    assert_eq!(ffi::my_special_function(12.0), 24.0);
+    assert_eq!(ffi::my_special_function(12.0), -12.0);
     println!("{}", ffi::my_special_function(13.0));
 }

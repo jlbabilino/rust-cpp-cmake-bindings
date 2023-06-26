@@ -1,5 +1,12 @@
 #include "mylibrary.h"
+#include <casadi/casadi.hpp>
+#include <casadi/core/optistack.hpp>
 
 double my_special_function(double input) {
-  return input * 2.0;
+  casadi::Opti opti;
+  opti.solver("ipopt");
+  casadi::MX x = opti.variable();
+  opti.minimize((x + input) * (x + input));
+  opti.solve();
+  return static_cast<double>(opti.value(x));
 }
