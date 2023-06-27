@@ -2,9 +2,14 @@ use cmake::Config;
 
 fn main() -> miette::Result<()> {
 
-  let dst = Config::new("cpp").define("CMAKE_APPLE_SILICON_PROCESSOR", "arm64").build();
+  let dst = Config::new("cpp")
+    .generator("MinGW Makefiles")
+    .define("CMAKE_CXX_COMPILER", "x86_64-w64-mingw32-g++")
+    .define("CMAKE_C_COMPILER", "x86_64-w64-mingw32-gcc")
+    .profile("RelWithDebInfo")
+    .build();
 
-  println!("cargo:rustc-link-search=native={}/lib", dst.display());
+  println!("cargo:rustc-link-search=native={}/bin", dst.display());
   println!("cargo:rustc-link-lib=rust-cpp-cmake-bindings-cpp");
 
   let inc_path = std::path::PathBuf::from("cpp/include");
